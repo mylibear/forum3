@@ -13,9 +13,7 @@ services:
     restart: always
 
   php:
-    build: 
-      context: ./public
-      dockerfile: Dockerfile
+    image: copy-php
     volumes:
       - ./public:/public
     depends_on:
@@ -24,13 +22,19 @@ services:
       codeigniter_net:
 
   database:
-    image: mysql:5.7
+    image: mysql:latest
     networks:
       codeigniter_net:
     ports:
-      - 13306:3306
-    env_file:
-      - .env
+      - 3306:3306
+    environment:
+      MYSQL_HOST : database
+      MYSQL_ROOT_PASSWORD : ci
+      MYSQL_DATABASE : ci_app
+      MYSQL_USER : php
+      MYSQL_PASSWORD : php
+    # env_file:
+    #   - .env
 
   phpmyadmin:
     depends_on:
@@ -39,10 +43,18 @@ services:
     restart: always
     ports:
       - '8282:80'
-    env_file:
-      - .env
+    environment:
+      MYSQL_HOST : database
+      MYSQL_ROOT_PASSWORD : ci
+      MYSQL_DATABASE : ci_app
+      MYSQL_USER : php
+      MYSQL_PASSWORD : php
+      PMA_HOST : database
+      PMA_PORT : 3306
+
     networks:
       codeigniter_net:
 
 networks:
   codeigniter_net:
+
