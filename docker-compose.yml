@@ -33,6 +33,8 @@ services:
       MYSQL_DATABASE : ci_app
       MYSQL_USER : php
       MYSQL_PASSWORD : php
+      PMA_HOST: database
+      
     # env_file:
     #   - .env
 
@@ -51,10 +53,14 @@ services:
       MYSQL_PASSWORD : php
       PMA_HOST : database
       PMA_PORT : 3306
-
+      PMA_ARBITRARY: 1
+    
+      
     networks:
       codeigniter_net:
 
 networks:
   codeigniter_net:
+
+
 
